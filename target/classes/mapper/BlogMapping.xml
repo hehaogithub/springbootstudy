@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bootstudy.mapper.BlogMapper">
+
+    <resultMap id="blog" type="com.bootstudy.modal.Blog">
+        <result column="id" jdbcType="INTEGER" property="id" />
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="cover_url" jdbcType="VARCHAR" property="cover_url" />
+        <result column="content" jdbcType="VARCHAR" property="content" />
+        <result column="creatime" jdbcType="VARCHAR" property="creatime" />
+        <result column="category" jdbcType="VARCHAR" property="category" />
+        <result column="creator" jdbcType="VARCHAR" property="creator" />
+    </resultMap>
+
+    <select id="getBlog" resultType="java.util.HashMap">
+        select * from blog_info where id = #{id}
+    </select>
+    <select id="getBlogList" parameterType="java.util.Map" resultType="com.bootstudy.modal.Blog">
+        select * from blog_info where 1=1
+        <if test="title != null and title!=''">
+          AND title like CONCAT('%',#{title},'%')
+       </if>
+    </select>
+    <insert id="saveBlog" parameterType="java.util.Map">
+        insert into blog_info(title,cover_url,content,category,creator,creatime)
+        values(#{title},#{cover_url},#{content},#{category},'0',now())
+    </insert>
+    <delete id="deleteBlog" parameterType="java.util.Map">
+       delete from blog_info where id=#{id}
+    </delete>
+</mapper>
